@@ -18,7 +18,7 @@ CREATE TABLE api_submissions (
     resp_states TEXT NOT NULL,
     method TEXT NOT NULL,
     PRIMARY KEY (sdk_key, request_id),
-    FOREIGN KEY (sdk_key) REFERENCES api_keys(sdk_key)
+    FOREIGN KEY (sdk_key) REFERENCES users(sdk_key)
 );
 -- +goose StatementEnd
 
