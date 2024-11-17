@@ -1,5 +1,16 @@
 <script setup>
 import { UserCircleIcon } from "@heroicons/vue/24/solid";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/solid";
+const loggedIn = ref(true);
+const token = useCookie("token");
+if (!token.value) {
+  loggedIn.value = false;
+}
+const logout = async () => {
+  navigateTo("http://localhost:8080/api/auth/google/logout", {
+    external: true,
+  });
+};
 </script>
 
 <template>
@@ -15,8 +26,19 @@ import { UserCircleIcon } from "@heroicons/vue/24/solid";
       </div>
       <div></div>
       <div class="flex justify-end">
-        <button class="bg-yellow-500 text-white px-4 py-2 rounded">
+        <button
+          v-if="!loggedIn"
+          class="bg-yellow-500 text-white px-4 py-2 rounded"
+        >
           <UserCircleIcon class="h-6 w-6" />
+        </button>
+        <button
+          v-if="loggedIn"
+          class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded"
+          @click="logout"
+        >
+          <ArrowLeftStartOnRectangleIcon class="h-6 w-6" />
+          <!-- <span>Logout</span> -->
         </button>
       </div>
     </div>
