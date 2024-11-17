@@ -46,7 +46,7 @@
             :key="index"
             class="p-4 bg-white rounded-lg shadow-md flex flex-wrap justify-between"
           >
-            <div>
+            <div class="w-1/2 overflow-hidden">
               <p class="font-bold">{{ api.endpoint }}</p>
               <p>{{ formatTimestamp(api.req_in) }}</p>
             </div>
@@ -93,7 +93,11 @@
           </p>
           <p>
             <span class="font-bold">Response States:</span>
-            {{ selectedApi.resp_states }}
+            {{ selectedApi.status_code }}
+          </p>
+          <p>
+            <span class="font-bold">Latency:</span>
+            {{ selectedApi.latency }}
           </p>
         </div>
         <div v-else>
@@ -164,8 +168,39 @@ function formatTimestamp(timestamp) {
   return new Date(timestamp).toLocaleString();
 }
 
-function handleButtonClick(api) {
+async function handleButtonClick(api) {
   selectedApi.value = api; // Set the selected API
+  const token = useCookie("jwt");
+  console.log(token.value);
+  console.log(api.raw_req_id);
+  const options = {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token.value}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      url: `https://moccasin-improved-smelt-48.mypinata.cloud/files/${api.raw_req_id}`,
+      date: 1731847517,
+      expires: 600,
+      method: "GET",
+    }),
+  };
+
+  try {
+    const signResponse = await fetch(
+      "https://api.pinata.cloud/v3/files/sign",
+      options
+    );
+    const signData = await signResponse.json();
+    console.log(signData);
+
+    const fileResponse = await fetch(signData.data, options);
+    const fileData = await fileResponse.json();
+    console.log(fileData);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 function applyFilter() {

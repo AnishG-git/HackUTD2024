@@ -37,7 +37,7 @@ func NewServer(addr string, db *sql.DB, logger *log.Logger) *Server {
 	)
 
 	router := mux.NewRouter()
-	router.Use(pineapplesdk.CreateMW("e1c291a1-b8be-4858-9b2c-a5fb727083c4"))
+	router.Use(pineapplesdk.CreateMW("03d0eabe-8699-4fde-9677-23dfa9633a54"))
 
 	s := &Server{
 		Router:  router,
