@@ -8,7 +8,7 @@
 
 <script>
 import BarChart from "~/components/BarChart.vue";
-import data from "../pages/home/data.json";
+import data from "../pages/home/data";
 
 export default {
   components: {
