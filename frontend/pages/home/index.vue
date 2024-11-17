@@ -2,6 +2,7 @@
 import LineChartWrapper from "~/components/LineChartWrapper.vue";
 import MapChartWrapper from "~/components/MapChartWrapper.vue";
 import PieChartWrapper from "~/components/PieChartWrapper.vue";
+import BarChartWrapper from "~/components/BarChartWrapper.vue";
 import { PinataSDK } from "pinata";
 
 const pinata = new PinataSDK({
@@ -32,6 +33,7 @@ const wap = async () => {
     <LineChartWrapper />
     <MapChartWrapper />
     <PieChartWrapper />
+    <BarChartWrapper />
     <div class="flex h-full justify-center items-center"></div>
     <button
         class="bg-red-200 hover:bg-yellow-600 text-black px-4 py-2 rounded"
