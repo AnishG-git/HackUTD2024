@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import json
 import openai
 import pandas as pd
@@ -7,6 +8,15 @@ import uvicorn
 import os
 
 app = FastAPI()
+
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Replace with your Nuxt origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 def saveCSV(file_path):
     with open(file_path, 'r') as file:
@@ -154,7 +164,7 @@ def chat():
         response = client.chat.completions.create(
             model='Meta-Llama-3.1-8B-Instruct',
             messages=[
-                {"role": "system", "content": "You are a business analyst specializing in API metrics analysis."},
+                {"role": "system", "content": "You are an AI model trained to be a business analyst specializing in API metrics analysis."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.1,
@@ -179,6 +189,8 @@ def process_question(df, question):
     - Error count (4xx/5xx): {len(df[df['resp_states'].astype(str).str.startswith(('4', '5'))])}
     - Most common method: {df['method'].mode().iloc[0]}
     - Unique endpoints: {len(df['endpoint'].unique())}
+    
+    Make sure it is NOT in makrdown. And should be easily understandable.
     """
     return context
 
@@ -191,14 +203,15 @@ def chat(request: ChatRequest):
         response = client.chat.completions.create(
             model='Meta-Llama-3.1-8B-Instruct',
             messages=[
-                {"role": "system", "content": "You are a business analyst specializing in API metrics analysis."},
+                {"role": "system", "content": "You are an AI model trained to be a business analyst specializing in API metrics analysis"},
                 {"role": "user", "content": context}
             ],
             temperature=0.1,
             top_p=0.1
         )
-        print(response)
-        return {"response": response.choices[0].message.content}
+        # print(response.choices[0].message.content)
+        respond = response.choices[0].message.content
+        return {"response": respond} 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

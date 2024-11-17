@@ -20,7 +20,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
-	db, err := storage.LoadDB("hackutd2024", mainLog)
+	db, err := storage.LoadDB("hackutd2024", mainLog, false)
 	if err != nil {
 		mainLog.Fatalf("Failed to load database: %v", err)
 	}
