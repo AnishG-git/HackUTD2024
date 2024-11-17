@@ -9,9 +9,9 @@ import (
 
 const secret = "secretpassword"
 
-func GenerateToken(userID string) string {
+func GenerateToken(sdk_key string) string {
 	claims := jwt.MapClaims{}
-	claims["user_id"] = userID
+	claims["sdk_key"] = sdk_key
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix() // Token valid for 1 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, _ := token.SignedString([]byte(secret))
