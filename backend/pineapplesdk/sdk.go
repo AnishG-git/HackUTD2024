@@ -44,6 +44,15 @@ func CreateMW(sdk_key string) func(next http.Handler) http.Handler {
 
 			go func() {
 				<-r.Context().Done()
+				// if sdk_key doesn't exist, print error and return
+				const query = "SELECT sdk_key FROM users WHERE sdk_key = $1"
+				var key string
+				err := db.QueryRow(query, sdk_key).Scan(&key)
+				if err != nil {
+					log.Println("Error querying database:", err)
+					return
+				}
+
 				responseSentAt := time.Now()
 				latency := int(responseSentAt.Sub(requestReceivedAt).Milliseconds())
 				log.Printf("Status Code: %d, Duration: %v, Response Body: %s\n", rw.statusCode, latency, string(rw.body))
