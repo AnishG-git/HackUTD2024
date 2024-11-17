@@ -52,7 +52,7 @@ func main() {
 	defer resp.Body.Close()
 	fmt.Println("Response Status:", resp.Status)
 	barrageServer(10)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 }
 
 func barrageServer(numRequests int) {
@@ -84,7 +84,6 @@ func barrageServer(numRequests int) {
 			if err != nil {
 				log.Fatalf("Error sending request: %v", err)
 			}
-			// time.Sleep(5 * time.Second)
 			wg.Done()
 		}()
 	}

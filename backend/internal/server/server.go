@@ -73,6 +73,7 @@ func (s *Server) routes() {
 	// handlers that don't require authentication
 	registerHandler := attachDefaultMws[models.RegisterRequest](s.registerHandler)
 	loginHandler := attachDefaultMws[models.LoginRequest](s.loginHandler)
+	pinataHandler := attachDefaultMws[models.Pinata](s.handlePinata)
 
 	// handlers that require authentication
 	predictHandler := attachDefaultMwsWithAuth[models.PredictRequest](s.predictHandler)
@@ -83,6 +84,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/login", loginHandler).Methods("POST")
 	api.HandleFunc("/predict", predictHandler).Methods("POST")
 	api.HandleFunc("/fetch-data/{sdk-key}", s.fetchDataHandler).Methods("GET")
+	api.HandleFunc("/pinata", pinataHandler).Methods("POST")
 
 	// sso routes
 	authR := api.PathPrefix("/auth/{provider}").Subrouter()
