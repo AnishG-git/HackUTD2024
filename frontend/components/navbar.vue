@@ -1,27 +1,11 @@
 <script setup>
 import { UserCircleIcon } from "@heroicons/vue/24/solid";
 // import { ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/solid";
-import { useAuth, setLoggedIn } from "~/composables/useAuth";
-
-const { loggedIn } = useAuth();
-
-const logout = async () => {
-  setLoggedIn(false);
-  console.log(loggedIn);
-  await navigateTo("http://localhost:8080/api/auth/google/logout", {
-    external: true,
-  });
-  // await navigateTo("/"); // Redirect to home page after logout
-};
-
-const login = async () => {
-  setLoggedIn(true);
-  console.log(loggedIn);
-  await navigateTo("http://localhost:8080/api/auth/google/sso", {
-    external: true,
-  });
-};
-
+const token = useCookie("jwt");
+const loggedIn = ref(true);
+if (!token.value) {
+  loggedIn.value = false;
+}
 const nav = (path) => {
   navigateTo(path);
 };
@@ -51,6 +35,7 @@ const nav = (path) => {
         </button> -->
         <button
           @click="nav('/profile')"
+          v-if="loggedIn"
           class="bg-yellow-300 rounded-full p-2 text-black"
         >
           <UserCircleIcon class="h-6 w-6" />

@@ -1,11 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import { useAuth, setLoggedIn } from "~/composables/useAuth";
-
-const { loggedIn } = useAuth();
 
 const login = async () => {
-  setLoggedIn(true);
   navigateTo("http://localhost:8080/api/auth/google/sso", {
     external: true,
   });

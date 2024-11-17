@@ -25,7 +25,7 @@ const show_key_toggle = () => {
 };
 
 const logout = async () => {
-  // setLoggedIn(false);
+//   setLoggedIn(false);
   // console.log(loggedIn);
   await navigateTo("http://localhost:8080/api/auth/google/logout", {
     external: true,
