@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "markdown-wasm": "^1.2.0",
+    "marked": "^15.0.0"
+  }
+}
