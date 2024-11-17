@@ -16,7 +16,8 @@ CREATE TABLE api_submissions (
     req_in TIMESTAMP NOT NULL,
     req_out TIMESTAMP NOT NULL,
     endpoint TEXT NOT NULL,
-    resp_states TEXT NOT NULL,
+    status INT NOT NULL,
+    latency INT NOT NULL,
     method TEXT NOT NULL,
     PRIMARY KEY (sdk_key, request_id),
     FOREIGN KEY (sdk_key) REFERENCES users(sdk_key)
