@@ -22,6 +22,25 @@ const wap = async () => {
   const data = await pinata.testAuthentication();
   // gateways.get("bafkreicd3p3hcsu7633nqcmnrlxohyvsfxtwvdgzxwp7uornwf66j6debu")
     console.log(data.String());
+
+
+};
+
+const currentIndex = ref(0);
+const charts = [
+  LineChartWrapper,
+  MapChartWrapper,
+  PieChartWrapper,
+  BarChartWrapper,
+  // Add more components if needed
+];
+
+const next = () => {
+  currentIndex.value = (currentIndex.value + 1) % charts.length;
+};
+
+const prev = () => {
+  currentIndex.value = (currentIndex.value - 1 + charts.length) % charts.length;
 };
 
 
@@ -30,17 +49,17 @@ const wap = async () => {
 <template>
   <div class="flex flex-col w-screen h-screen bg-gray-900 text-white">
     <navbar />
-    <LineChartWrapper />
-    <MapChartWrapper />
-    <PieChartWrapper />
-    <BarChartWrapper />
-    <div class="flex h-full justify-center items-center"></div>
-    <button
-        class="bg-red-200 hover:bg-yellow-600 text-black px-4 py-2 rounded"
-        @click="wap"
-      >
-        Wap
-    </button>
+    <div class="carousel-container flex flex-wrap justify-center items-center h-full">
+      <button @click="prev" class="carousel-button text-6xl">‹</button>
+      <div class="carousel flex flex-wrap w-5/6">
+        <component :is="charts[currentIndex]" class="carousel-item w-1/3  shadow-2xl" />
+        <component :is="charts[(currentIndex + 1) % charts.length]" class="carousel-item w-1/3 shadow-2xl" />
+        <component :is="charts[(currentIndex + 2) % charts.length]" class="carousel-item w-1/3 shadow-2xl" />
+      </div>
+      <button @click="next" class="carousel-button text-6xl">›</button>
+    </div>
+    
+    
   </div>
 </template>
 
