@@ -29,6 +29,8 @@ services:
     build:
       context: ./
       dockerfile: ./model/dockerfile
+    ports:
+      - "8000:8000"
     depends_on:
       - db
     volumes:

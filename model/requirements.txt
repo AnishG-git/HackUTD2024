@@ -1,5 +1,5 @@
-tensorflow
-numpy
 fastapi
 pydantic
 uvicorn
+openai
+pandas
