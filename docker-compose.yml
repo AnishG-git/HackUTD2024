@@ -22,17 +22,17 @@ services:
       - "8080:8080"
     depends_on:
       - db
-      # - model
+      - model
 
-  # model:
-  #   restart: always
-  #   build:
-  #     context: ./
-  #     dockerfile: ./model/dockerfile
-  #   depends_on:
-  #     - db
-  #   volumes:
-  #     - ./model:/app
+  model:
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./model/dockerfile
+    depends_on:
+      - db
+    volumes:
+      - ./model:/app
 
 volumes:
   db_data:
