@@ -8,7 +8,7 @@
   
   <script>
   import LineChart from "~/components/LineChart.vue";
-  import data from "../pages/home/data.json";
+  import data from "../pages/home/data";
   
   export default {
     components: {
