@@ -1,12 +1,12 @@
 <template>
-    <div class="flex flex-col w-screen h-screen bg-gray-900 text-white">
+    <div class="flex flex-col w-screen h-screen bg-gray-900 text-white overflow-hidden">
         <navbar />
         <div class="flex h-full">
             <div
-                class="m-4 max-w-screen-lg flex text-black text-md bg-white rounded-lg shadow-md border-blue-600 border-4">
+                class="m-4 mr-2 h-[90vh] w-1/2 flex text-black text-md bg-white rounded-lg shadow-md border-blue-600 border-4">
                 <Report filePath="/business_report.md" />
             </div>
-            <div class="mt-32 w-3/6 h-4/6 text-black text-md bg-white rounded-lg shadow-md border-blue-600 border-4">
+            <div class="m-4 ml-2 w-1/2 h-[90vh] text-black text-md bg-white rounded-lg shadow-md border-blue-600 border-4">
                 <Chat>
 
                     

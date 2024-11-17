@@ -1,21 +1,82 @@
 <template>
     <div class="chat-container">
-        <div class="chat-box">
-            <div class="ai-person-container">
-                <div class="person">Hello! How can I help API's today?</div>
+        <div class="chat-box" ref="chatBoxRef">
+            <!-- Loop through messages and display them -->
+            <div class="ai-person-container" v-for="(msg, index) in messages" :key="index">
+                <div :class="msg.sender === 'user' ? 'person' : 'ai'">{{ msg.text }}</div>
             </div>
         </div>
         <div class="chat-input-container">
-            <input class="chat-input" type="text" placeholder="Type a message..." />
-            <button class="chat-submit">Send</button>
+            <input class="chat-input" type="text" placeholder="Type a message..." v-model="message"
+                @keyup.enter="sendMessage" />
+            <button class="chat-submit" @click="sendMessage">Send</button>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    name: 'ChatComponent'
-}
+<script setup>
+import { ref, watch } from 'vue';
+import axios from 'axios';
+
+// Create refs for message, messages, and chat box
+const message = ref('');
+const messages = ref([]);
+const chatBoxRef = ref(null);
+
+// Auto scroll to bottom when messages change
+watch(() => messages.value.length, () => {
+    setTimeout(() => {
+        if (chatBoxRef.value) {
+            chatBoxRef.value.scrollTop = chatBoxRef.value.scrollHeight;
+        }
+    }, 100); // Small delay to ensure content is rendered
+});
+
+// Define the sendMessage function
+const sendMessage = async () => {
+    // Trim and check if message is empty
+    if (message.value.trim() === '') return;
+
+    // Create a new user message
+    const userMessage = {
+        text: message.value.trim(),
+        sender: 'user'
+    };
+
+    // Store the message text before clearing input
+    const messageText = message.value;
+
+    // Clear the input field immediately for better UX
+    message.value = '';
+
+    // Add user message to the chat box
+    messages.value.push(userMessage);
+
+    // Send the message to the backend API
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/ask', {
+            message: messageText
+        });
+
+        // Create a new AI message
+        const aiMessageText = response.data?.response || 'No response from AI';
+        const aiMessage = {
+            text: aiMessageText,
+            sender: 'ai'
+        };
+
+        console.log(aiMessageText);
+
+        // Add AI message to the chat box
+        messages.value.push(aiMessage);
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
+
+};
+
+
+
 </script>
 
 <style scoped>
