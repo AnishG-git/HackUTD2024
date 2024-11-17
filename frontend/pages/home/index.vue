@@ -49,15 +49,28 @@ const prev = () => {
 <template>
   <div class="flex flex-col w-screen h-screen bg-gray-900 text-white">
     <navbar />
-    <div class="carousel-container flex flex-wrap justify-center items-center h-full">
-      <button @click="prev" class="carousel-button text-6xl">‹</button>
-      <div class="carousel flex flex-wrap w-5/6">
-        <component :is="charts[currentIndex]" class="carousel-item w-1/3  shadow-2xl" />
-        <component :is="charts[(currentIndex + 1) % charts.length]" class="carousel-item w-1/3 shadow-2xl" />
-        <component :is="charts[(currentIndex + 2) % charts.length]" class="carousel-item w-1/3 shadow-2xl" />
+    <h1 class="p-6 pt-10 text-4xl text-yellow-400 font-semibold">API Analysis</h1>
+    <div class="w-full h-2/5 flex flex-wrap">
+      <div class="w-2/3 min-h-full p-10 pr-5 pt-0">
+        <LineChartWrapper/>
       </div>
-      <button @click="next" class="carousel-button text-6xl">›</button>
+      <div class="w-1/3 min-h-full p-10 pl-5 pt-0">
+        <PieChartWrapper/>
+      </div>
     </div>
+
+    <div class="w-full h-2/5 flex flex-wrap pt-0">
+      <div class="w-2/3 min-h-full p-10 pt-0 pr-5">
+        <BarChartWrapper/>
+      </div>
+      <div class="w-1/3 min-h-full p-10 pt-0 pl-5">
+        <MapChartWrapper/>
+      </div>
+    </div>
+    
+    
+    
+    
     
     
   </div>

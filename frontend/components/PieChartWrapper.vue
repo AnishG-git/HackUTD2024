@@ -1,6 +1,8 @@
 <template>
     
-      <PieChart :chartData="chartData" :chartOptions="chartOptions" />
+      <div class="min-w-full min-h-full p-4 bg-white rounded-lg shadow-md border-blue-600 border-4">
+        <PieChart :chartData="chartData" :chartOptions="chartOptions" />
+      </div>
     
   </template>
   

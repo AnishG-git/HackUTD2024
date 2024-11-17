@@ -1,9 +1,8 @@
 <template>
   
-  <div class="  h-full">
-    <BarChart :chartData="chartData" :chartOptions="chartOptions" />
-  </div>
-    
+    <div class="min-w-full min-h-full p-4 bg-white rounded-lg shadow-md border-blue-600 border-4">
+      <BarChart :chartData="chartData" :chartOptions="chartOptions" />
+    </div>
   
 </template>
 

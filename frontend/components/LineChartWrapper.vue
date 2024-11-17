@@ -1,5 +1,9 @@
 <template>
-    <LineChart :chartData="chartData" :chartOptions="chartOptions" />
+   
+        <div class="min-w-full min-h-full p-4 bg-white rounded-lg shadow-md border-blue-600 border-4">
+        <LineChart :chartData="chartData" :chartOptions="chartOptions" />
+      </div>
+    
   </template>
   
   <script>
@@ -47,11 +51,7 @@
           const reqIn = new Date(api.req_in).getTime();
           const reqOut = new Date(api.req_out).getTime();
   
-          for (
-            let t = reqIn;
-            t <= reqOut;
-            t += intervalDuration
-          ) {
+          for (let t = reqIn; t <= reqOut; t += intervalDuration) {
             const interval = new Date(t).toISOString().slice(0, 16); // Format as 'YYYY-MM-DDTHH:mm'
             intervals[interval] = (intervals[interval] || 0) + 1;
           }
@@ -81,3 +81,4 @@
     },
   };
   </script>
+  
