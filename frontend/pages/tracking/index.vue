@@ -5,12 +5,14 @@
     <!-- Main Container -->
     <div class="flex h-full">
       <!-- Sidebar -->
-      <div class="h-full w-1/3 p-4 overflow-y-auto shadow-lg ">
+      <div class="h-full w-1/3 p-4 overflow-y-auto shadow-lg">
         <h2 class="text-lg font-bold mb-4 text-white">API List</h2>
 
         <!-- Filter Section -->
         <div class="mb-4">
-          <label for="filter-time" class=" text-white font-bold">Filter by Request Time:</label>
+          <label for="filter-time" class="text-white font-bold"
+            >Filter by Request Time:</label
+          >
           <input
             id="filter-time"
             type="datetime-local"
@@ -18,7 +20,9 @@
             class="w-full p-2 rounded-xl py-4 border mb-2"
           />
 
-          <label for="filter-endpoint" class=" text-white font-bold block">Filter by Endpoint:</label>
+          <label for="filter-endpoint" class="text-white font-bold block"
+            >Filter by Endpoint:</label
+          >
           <input
             id="filter-endpoint"
             type="text"
@@ -47,7 +51,9 @@
               <p>{{ formatTimestamp(api.req_in) }}</p>
             </div>
 
-            <div class="bg-red-200 border-red-600 border-2 text-red-900 rounded-full px-2 flex items-center justify-center text-md">
+            <div
+              class="bg-red-200 border-red-600 border-2 text-red-900 rounded-full px-2 flex items-center justify-center text-md"
+            >
               <p>{{ api.method }}</p>
             </div>
 
@@ -65,13 +71,30 @@
       <div class="h-full w-2/3 p-8 text-white">
         <h2 class="text-2xl font-bold mb-4">API Details</h2>
         <div v-if="selectedApi" class="space-y-4">
-          <p><span class="font-bold">Endpoint:</span> {{ selectedApi.endpoint }}</p>
-          <p><span class="font-bold">Request In:</span> {{ formatTimestamp(selectedApi.req_in) }}</p>
-          <p><span class="font-bold">Request Out:</span> {{ formatTimestamp(selectedApi.req_out) }}</p>
+          <p>
+            <span class="font-bold">Endpoint:</span> {{ selectedApi.endpoint }}
+          </p>
+          <p>
+            <span class="font-bold">Request In:</span>
+            {{ formatTimestamp(selectedApi.req_in) }}
+          </p>
+          <p>
+            <span class="font-bold">Request Out:</span>
+            {{ formatTimestamp(selectedApi.req_out) }}
+          </p>
           <p><span class="font-bold">Method:</span> {{ selectedApi.method }}</p>
-          <p><span class="font-bold">Raw Request ID:</span> {{ selectedApi.raw_req_id }}</p>
-          <p><span class="font-bold">Raw Response ID:</span> {{ selectedApi.raw_resp_id }}</p>
-          <p><span class="font-bold">Response States:</span> {{ selectedApi.resp_states }}</p>
+          <p>
+            <span class="font-bold">Raw Request ID:</span>
+            {{ selectedApi.raw_req_id }}
+          </p>
+          <p>
+            <span class="font-bold">Raw Response ID:</span>
+            {{ selectedApi.raw_resp_id }}
+          </p>
+          <p>
+            <span class="font-bold">Response States:</span>
+            {{ selectedApi.resp_states }}
+          </p>
         </div>
         <div v-else>
           <p class="text-gray-500">Select an API to view its details.</p>
@@ -81,47 +104,91 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import data from "../home/data.json";
+<script setup>
+import { ref, onMounted } from "vue";
+//import { useCookie } from "vue-composable"; // Ensure you are using a compatible library
+import data from "../home/data.json"; // Placeholder for additional data if needed
 
-export default defineComponent({
-  name: "ApiList",
-  data() {
-    return {
-      apiData: [], // Original data from JSON
-      filteredApiData: [], // Filtered data based on user input
-      filterTime: "", // User-inputted time
-      filterEndpoint: "", // User-inputted endpoint
-      selectedApi: null, // Currently selected API
-    };
-  },
-  methods: {
-    formatTimestamp(timestamp) {
-      return new Date(timestamp).toLocaleString();
-    },
-    handleButtonClick(api) {
-      this.selectedApi = api; // Set the selected API
-    },
-    applyFilter() {
-      const filterTimestamp = this.filterTime ? new Date(this.filterTime).getTime() : null;
-      const endpointFilter = this.filterEndpoint.toLowerCase();
+// Reactive variables
+const apiData = ref([]); // API data storage
+const filteredApiData = ref([]); // Filtered data based on user input
+const filterTime = ref(""); // User-inputted time
+const filterEndpoint = ref(""); // User-inputted endpoint
+const selectedApi = ref(null); // Currently selected API
+const user = ref("");
 
-      this.filteredApiData = this.apiData.filter((api) => {
-        const reqInTimestamp = new Date(api.req_in).getTime();
-        const matchesTime = filterTimestamp ? reqInTimestamp > filterTimestamp : true;
-        const matchesEndpoint = endpointFilter
-          ? api.endpoint.toLowerCase().includes(endpointFilter)
-          : true;
+// Helper function to parse JWT token
+function parseJwt(token) {
+  const arrayToken = token.split(".");
+  const tokenPayload = JSON.parse(atob(arrayToken[1]));
+  return tokenPayload;
+}
 
-        return matchesTime && matchesEndpoint;
-      });
-    },
-  },
-  created() {
-    // Retrieve data from data.json
-    this.apiData = data;
-    this.filteredApiData = this.apiData; // Initialize with all data
-  },
+// Fetch API data
+async function fetchData() {
+  const token = useCookie("jwt");
+  if (token.value) {
+    user.value = parseJwt(token.value).sdk_key;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/fetch-data/${user.value}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Fetched Data:", data);
+
+      // Assign the fetched data to apiData
+      apiData.value = data;
+
+      // Optionally, initialize filteredApiData
+      filteredApiData.value = apiData.value;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+}
+
+// Filter and utility functions
+function formatTimestamp(timestamp) {
+  return new Date(timestamp).toLocaleString();
+}
+
+function handleButtonClick(api) {
+  selectedApi.value = api; // Set the selected API
+}
+
+function applyFilter() {
+  const filterTimestamp = filterTime.value
+    ? new Date(filterTime.value).getTime()
+    : null;
+  const endpointFilter = filterEndpoint.value.toLowerCase();
+
+  filteredApiData.value = apiData.value.filter((api) => {
+    const reqInTimestamp = new Date(api.req_in).getTime();
+    const matchesTime = filterTimestamp
+      ? reqInTimestamp > filterTimestamp
+      : true;
+    const matchesEndpoint = endpointFilter
+      ? api.endpoint.toLowerCase().includes(endpointFilter)
+      : true;
+
+    return matchesTime && matchesEndpoint;
+  });
+}
+
+// Fetch data when component is mounted
+onMounted(() => {
+  fetchData();
 });
 </script>

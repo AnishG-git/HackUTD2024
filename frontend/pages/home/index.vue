@@ -5,6 +5,42 @@ import PieChartWrapper from "~/components/PieChartWrapper.vue";
 import BarChartWrapper from "~/components/BarChartWrapper.vue";
 import { PinataSDK } from "pinata";
 
+function parseJwt(token) {
+  const arrayToken = token.split(".");
+  const tokenPayload = JSON.parse(atob(arrayToken[1]));
+  return tokenPayload;
+}
+
+// const token = useCookie("jwt");
+// const user = ref("");
+// if (token.value) {
+//   user.value = parseJwt(token.value).sdk_key;
+//   console.log(user);
+//   const data = await axios.get(`http://localhost:8080/api/fetch-data/${user.value}`);
+//   fetch data get request from http://localhost:8080/api/fetch-data/${user.value} using browser fetch api
+//   const data = await fetch(`http://localhost:8080/api/fetch-data/${user.value}`, {
+//   method: "GET",
+//   headers: {
+//     "Content-Type": "application/json", // Optional, depending on your API requirements
+//   },
+// })
+//   .then((response) => {
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+//     return response.json(); // Parse JSON response
+//   })
+//   .then((data) => {
+//     console.log("Fetched Data:", data);
+//   })
+//   .catch((error) => {
+//     console.error("Error fetching data:", error);
+//   });
+
+//   console.log(data);
+// }
+
+
 const pinata = new PinataSDK({
     pinataJwt: "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5U1c1bWIzSnRZWFJwYjI0aU9uc2lhV1FpT2lKaE1qbGxPVEl3WVMxak1EbGpMVFEzWlRJdE9USmtZeTA1WmpZeVptUTBaVFEzT1RBaUxDSmxiV0ZwYkNJNkluSmxZV05vZEhWemFHRnlkMkZ1YVVCbmJXRnBiQzVqYjIwaUxDSmxiV0ZwYkY5MlpYSnBabWxsWkNJNmRISjFaU3dpY0dsdVgzQnZiR2xqZVNJNmV5SnlaV2RwYjI1eklqcGJleUprWlhOcGNtVmtVbVZ3YkdsallYUnBiMjVEYjNWdWRDSTZNU3dpYVdRaU9pSkdVa0V4SW4wc2V5SmtaWE5wY21Wa1VtVndiR2xqWVhScGIyNURiM1Z1ZENJNk1Td2lhV1FpT2lKT1dVTXhJbjFkTENKMlpYSnphVzl1SWpveGZTd2liV1poWDJWdVlXSnNaV1FpT21aaGJITmxMQ0p6ZEdGMGRYTWlPaUpCUTFSSlZrVWlmU3dpWVhWMGFHVnVkR2xqWVhScGIyNVVlWEJsSWpvaWMyTnZjR1ZrUzJWNUlpd2ljMk52Y0dWa1MyVjVTMlY1SWpvaVpEaGhPREk1TVdRME9HTmpZelV5TldZME9ERWlMQ0p6WTI5d1pXUkxaWGxUWldOeVpYUWlPaUkyWVdVeVpHRmhOR0kwWVdVMFlqSXlZVFkyT1dNMVpqWmpNMk16T0RBd01UYzRNbUZrT0dVMFl6SXlNRGt6TjJZeFpHVmxZMkprT0dKaE1qSTVaamcxSWl3aVpYaHdJam94TnpZek16UTNOalV5ZlEubTFVa3J5TmFGWjhRNS1UMzR0bXlrSmFPd0c4dnRhR1NUdmZWWWJvOEFOOA==",
     pinataGateway: "moccasin-improved-smelt-48.mypinata.cloud",

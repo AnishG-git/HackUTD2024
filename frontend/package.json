@@ -13,6 +13,7 @@
     "@heroicons/vue": "^2.1.5",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinata/sdk": "^2.1.0",
+    "axios": "^1.7.7",
     "chart.js": "^4.4.6",
     "nuxt": "^3.13.0",
     "pinata": "^1.8.1",
