@@ -1,7 +1,7 @@
 <template>
-    <div class="p-4 bg-white rounded-lg shadow-md">
-      <canvas ref="chartCanvas"></canvas>
-    </div>
+    
+    <canvas ref="chartCanvas"></canvas>
+    
   </template>
   
   <script>
@@ -30,7 +30,11 @@
         new Chart(chartCanvas.value, {
           type: "line",
           data: props.chartData,
-          options: props.chartOptions,
+          options: {
+            ...props.chartOptions,
+            responsive: true,
+            maintainAspectRatio: false, // Allows the chart to stretch to fill the container
+          },
         });
       });
   
