@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-screen h-screen bg-gray-900">
+  <div class="flex flex-col w-screen h-screen bg-gray-900 overflow-hidden">
     <navbar />
 
     <!-- Main Container -->
@@ -107,7 +107,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 //import { useCookie } from "vue-composable"; // Ensure you are using a compatible library
-import data from "../home/data.json"; // Placeholder for additional data if needed
+//import data from "../home/data.json"; // Placeholder for additional data if needed
 
 // Reactive variables
 const apiData = ref([]); // API data storage
