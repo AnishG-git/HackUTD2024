@@ -48,7 +48,7 @@ func (s *Server) googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, c)
-	http.Redirect(w, r, "http://localhost:3000", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "http://localhost:3000/home", http.StatusTemporaryRedirect)
 }
 
 func (s *Server) googleLogoutHandler(w http.ResponseWriter, r *http.Request) {

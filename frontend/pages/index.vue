@@ -1,15 +1,21 @@
 <script setup>
-const res = await useFetch("http://localhost:8080/api/ping");
-console.log("res", res);
+const login = async () => {
+  navigateTo("http://localhost:8080/api/auth/google/sso", {
+    external: true,
+  });
+};
 </script>
 
 <template>
-  <div class="flex justify-center items-center w-screen h-screen">
-    <div class="underline font-mono text-4xl text-red-900">
-      {{ res.data.value }}
+  <div class="flex flex-col w-screen h-screen bg-gray-900 text-white">
+    <navbar />
+    <div class="flex h-full justify-center items-center">
+      <button
+        class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded"
+        @click="login"
+      >
+        Login
+      </button>
     </div>
-    <nuxt-link to="/login" class="bg-red-400 p-5 rounded-xl text-2xl shadow-lg text-white hover:bg-red-600">
-      <button>register</button>
-    </nuxt-link>
   </div>
 </template>
