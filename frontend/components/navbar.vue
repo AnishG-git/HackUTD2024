@@ -10,11 +10,33 @@ const nav = (path) => {
   navigateTo(path);
 };
 
+import { ref } from 'vue'
+
+const fetchChartData = async () => {
+  navigateTo('/report')
+  try {
+    const response = await fetch('http://127.0.0.1:8000/report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('There has been a problem with your fetch operation:', error);
+  }
+};
+
+
 </script>
 
 <template>
   <div
-    class="relative text-white w-screen p-2 bg-gray-800 border border-b-yellow-300 border-l-transparent border-r-transparent border-t-transparent border-b-transparent">
+    class="relative text-white w-screen p-2 bg-gray-800 border border-b-yellow-200 border-l-transparent border-r-transparent border-t-transparent border-b-transparent">
     <div class="grid grid-cols-3 relative z-10">
       <div>
         <h1 class="text-2xl font-bold uppercase space-x-1 text-yellow-200">
@@ -23,19 +45,19 @@ const nav = (path) => {
       </div>
       <div></div>
       <div class="flex justify-end">
-        <button class="bg-yellow-300 hover:bg-yellow-600 text-black px-4 mx-4 py-2 rounded" @click="nav('/home')"
+        <button class="bg-yellow-200 hover:bg-yellow-600 text-black px-4 mx-4 py-2 rounded" @click="nav('/home')"
           v-if="loggedIn">
           Home
         </button>
-        <button class="bg-yellow-300 hover:bg-yellow-600 text-black px-4 mx-4 py-2 rounded" @click="nav('/tracking')"
+        <button class="bg-yellow-200 hover:bg-yellow-600 text-black px-4 mx-4 py-2 rounded" @click="nav('/tracking')"
           v-if="loggedIn">
           Tracking
         </button>
-        <button class="bg-yellow-300 hover:bg-yellow-600 text-black px-4 mx-4 py-2 rounded" @click="nav('/report')"
+        <button class="bg-yellow-200 hover:bg-yellow-600 text-black px-4 mx-4 py-2 rounded" @click="fetchChartData()"
           v-if="loggedIn">
           Reports
         </button>
-        <button @click="nav('/profile')" v-if="loggedIn" class="bg-yellow-300 rounded-full p-2 text-black">
+        <button @click="nav('/profile')" v-if="loggedIn" class="bg-yellow-200 rounded-full p-2 text-black">
           <UserCircleIcon class="h-6 w-6" />
         </button>
       </div>
