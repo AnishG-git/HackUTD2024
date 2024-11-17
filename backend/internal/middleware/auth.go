@@ -39,7 +39,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		// set user id on context for downstream handlers
-		ctx := context.WithValue(r.Context(), "user_id", claims["user_id"])
+		ctx := context.WithValue(r.Context(), "sdk_key", claims["sdk_key"])
 		next(w, r.WithContext(ctx))
 	}
 }

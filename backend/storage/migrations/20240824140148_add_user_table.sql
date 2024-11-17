@@ -1,14 +1,16 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE users (
     email VARCHAR(255) NOT NULL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
-    sdk_key uuid NOT NULL DEFAULT
+    sdk_key TEXT NOT NULL UNIQUE
 );
+
 CREATE TABLE api_submissions (
-    sdk_key uuid NOT NULL,
-    request_id uuid NOT NULL,
+    sdk_key TEXT NOT NULL,
+    request_id TEXT NOT NULL,
     raw_req_id TEXT,
     raw_resp_id TEXT,
     req_in TIMESTAMP NOT NULL,
@@ -20,9 +22,10 @@ CREATE TABLE api_submissions (
     FOREIGN KEY (sdk_key) REFERENCES users(sdk_key)
 );
 -- +goose StatementEnd
+
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE users;
 DROP TABLE IF EXISTS api_submissions;
+DROP TABLE IF EXISTS users;
 DROP EXTENSION IF EXISTS "uuid-ossp";
 -- +goose StatementEnd
