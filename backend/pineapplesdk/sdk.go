@@ -15,17 +15,21 @@ import (
 
 	"github.com/AnishG-git/HackUTD2024/backend/storage"
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 )
 
 // Middleware to emulate a round trip for requests and responses
 func CreateMW(sdk_key string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		mwLog := log.Default()
-		db, err := storage.LoadDB("hackutd2024", mwLog)
+		db, err := storage.LoadDB("hackutd2024", mwLog, true)
 		if err != nil {
 			mwLog.Fatalf("Failed to load database: %v", err)
 		}
-
+		err = godotenv.Load("../backend/.env")
+		if err != nil {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			// 1. Start: Before handling the request (Pre-processing)
 			requestReceivedAt := time.Now()

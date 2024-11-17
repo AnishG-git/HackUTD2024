@@ -9,7 +9,6 @@ import (
 
 	mw "github.com/AnishG-git/HackUTD2024/backend/internal/middleware"
 	"github.com/AnishG-git/HackUTD2024/backend/internal/models"
-	"github.com/AnishG-git/HackUTD2024/backend/pineapplesdk"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/markbates/goth"
@@ -37,7 +36,7 @@ func NewServer(addr string, db *sql.DB, logger *log.Logger) *Server {
 	)
 
 	router := mux.NewRouter()
-	router.Use(pineapplesdk.CreateMW("47e05264-1e37-416b-b4d2-00e212ab1582"))
+	// router.Use(pineapplesdk.CreateMW("47e05264-1e37-416b-b4d2-00e212ab1582"))
 
 	s := &Server{
 		Router:  router,
@@ -74,6 +73,7 @@ func (s *Server) routes() {
 	// handlers that don't require authentication
 	registerHandler := attachDefaultMws[models.RegisterRequest](s.registerHandler)
 	loginHandler := attachDefaultMws[models.LoginRequest](s.loginHandler)
+	pinataHandler := attachDefaultMws[models.Pinata](s.handlePinata)
 
 	// handlers that require authentication
 	predictHandler := attachDefaultMwsWithAuth[models.PredictRequest](s.predictHandler)
@@ -84,6 +84,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/login", loginHandler).Methods("POST")
 	api.HandleFunc("/predict", predictHandler).Methods("POST")
 	api.HandleFunc("/fetch-data/{sdk-key}", s.fetchDataHandler).Methods("GET")
+	api.HandleFunc("/pinata", pinataHandler).Methods("POST")
 
 	// sso routes
 	authR := api.PathPrefix("/auth/{provider}").Subrouter()
