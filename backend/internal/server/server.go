@@ -9,7 +9,6 @@ import (
 
 	mw "github.com/AnishG-git/HackUTD2024/backend/internal/middleware"
 	"github.com/AnishG-git/HackUTD2024/backend/internal/models"
-	"github.com/AnishG-git/HackUTD2024/backend/pineapplesdk"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/markbates/goth"
@@ -37,7 +36,7 @@ func NewServer(addr string, db *sql.DB, logger *log.Logger) *Server {
 	)
 
 	router := mux.NewRouter()
-	router.Use(pineapplesdk.CreateMW("47e05264-1e37-416b-b4d2-00e212ab1582"))
+	// router.Use(pineapplesdk.CreateMW("47e05264-1e37-416b-b4d2-00e212ab1582"))
 
 	s := &Server{
 		Router:  router,

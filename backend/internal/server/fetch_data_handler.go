@@ -76,4 +76,5 @@ func (s *Server) fetchDataHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Response encoding error:", err)
 		s.writeErrorResponse(w, http.StatusInternalServerError, "Failed to encode response")
 	}
+	w.WriteHeader(http.StatusOK)
 }
