@@ -8,6 +8,7 @@ import (
 	"os"
 
 	mw "github.com/AnishG-git/HackUTD2024/backend/internal/middleware"
+	"github.com/AnishG-git/HackUTD2024/backend/internal/middleware/pineapplesdk"
 	"github.com/AnishG-git/HackUTD2024/backend/internal/models"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
@@ -36,6 +37,7 @@ func NewServer(addr string, db *sql.DB, logger *log.Logger) *Server {
 	)
 
 	router := mux.NewRouter()
+	router.Use(pineapplesdk.CreateMW("ae398481-5a6f-4228-8eb7-d483e6820991"))
 
 	s := &Server{
 		Router:  router,
@@ -81,6 +83,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/register", registerHandler).Methods("POST")
 	api.HandleFunc("/login", loginHandler).Methods("POST")
 	api.HandleFunc("/predict", predictHandler).Methods("POST")
+	api.HandleFunc("/fetch-data/{sdk-key}", s.fetchDataHandler).Methods("GET")
 
 	// sso routes
 	authR := api.PathPrefix("/auth/{provider}").Subrouter()
